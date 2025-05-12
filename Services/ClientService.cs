@@ -60,4 +60,23 @@ public class ClientService : IClientService
 
         return clients;
     }
+
+    public async Task<List<string>> GetConsultationDouble()
+    {
+        var result = await _context.Clients
+            .AsNoTracking()
+            .Select(client => new
+            {
+                ClientName = client.Name,
+                TotalProducts = client.Orders
+                    .Sum(order => order.Orderdetails
+                        .Sum(detail => detail.Quantity))
+            })
+            .ToListAsync();
+
+        return result
+            .Select(x => $"{x.ClientName} compró {x.TotalProducts} productos")
+            .ToList();
+    }
+    
 }
