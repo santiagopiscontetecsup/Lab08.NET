@@ -28,4 +28,26 @@ public class OrderDetailService : IOrderDetailService
 
         return result;
     }
+    
+    public async Task<List<OrderDetailsDto>> GetMethodInclude()
+    {
+        var ordersWithDetails = _context.Orders
+            .Include(order => order.Orderdetails)
+            .ThenInclude(orderDetail => orderDetail.Product)
+            .AsNoTracking()
+            .Select(order => new OrderDetailsDto
+            {
+                OrderId = order.OrderId,
+                OrderDate = order.OrderDate,
+                Products = order.Orderdetails
+                    .Select(od => new ProductsDto
+                    {
+                        ProductName = od.Product.Name,
+                        Quantity = od.Quantity,
+                        Price = od.Product.Price
+                    }).ToList()
+            }).ToList();
+        
+        return ordersWithDetails;
+    }
 }
