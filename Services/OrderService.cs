@@ -59,7 +59,7 @@ public class OrderService : IOrderService
             .Select(od => new OrderDetailDto
             {
                 OrderId = od.OrderId,
-                ProductName = _productRepository.GetByIdAsync(od.ProductId).Result?.Name ?? "Producto no encontrado", // Evitamos el null
+                ProductName = _productRepository.GetByIdAsync(od.ProductId).Result?.Name ?? "Producto no encontrado", 
                 Quantity = od.Quantity
             })
             .ToList();
@@ -67,10 +67,31 @@ public class OrderService : IOrderService
         return result;
     }
     
+    // profe jhordan
+    
+    public async Task<List<ClientOrderDto>> GetAllOrdersLab09()
+    {
+        var clientOrders = await _context.Clients
+            .AsNoTracking()
+            .Select(client => new ClientOrderDto
+            {
+                ClientName = client.Name,
+                Orders = client.Orders
+                    .Select(order => new OrderDto
+                    {
+                        OrderId = order.OrderId,
+                        ClientId = order.ClientId,
+                        OrderDate = order.OrderDate
+                    }).ToList()
+            }).ToListAsync();
+
+        return clientOrders;
+    }      
+    
     public async Task<List<SoldProductDto>> GetSoldProductsByClientIdAsync(int clientId)
     {
         var orderDetails = await _context.Orderdetails
-            .Include(od => od.Order) // Incluye la relación con Order
+            .Include(od => od.Order)
             .ToListAsync();
 
         var grouped = orderDetails

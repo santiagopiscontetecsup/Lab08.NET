@@ -50,7 +50,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-        c.RoutePrefix = string.Empty; // Esto lo muestra en http://localhost:5000 directamente
+        c.RoutePrefix = string.Empty; 
     });
 }
 
