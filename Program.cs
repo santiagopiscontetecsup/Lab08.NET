@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Lab08_SantiagoPisconteChuctaya.Data;
 using Lab08_SantiagoPisconteChuctaya.Persistence;
 using Lab08_SantiagoPisconteChuctaya.Persistence.Implementations;
+using Lab08_SantiagoPisconteChuctaya.Persistence.Queries;
 using Lab08_SantiagoPisconteChuctaya.Persistence.Repositories;
 using Lab08_SantiagoPisconteChuctaya.Services;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,13 @@ builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderDetailService, OrderDetailService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<ILab09Service, Lab09Service>();
+
+builder.Services.AddScoped<ClientsOrdersQuery>();
+builder.Services.AddScoped<OrdersDetailsQuery>();
+builder.Services.AddScoped<ClientsProductsSummaryQuery>();
+builder.Services.AddScoped<SalesByClientQuery>();
+
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
